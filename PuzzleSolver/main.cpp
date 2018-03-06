@@ -10,19 +10,28 @@
 #include <string.h>
 #include "puzzle.h"
 #include <cassert>
-#include "util.h"
+#include "utils.h"
 #include "PuzzleDisjointSet.h"
 #include <sys/time.h>
 
 //Dont forget final "/" in directory name.
-static const std::string input = "/Users/jzeimen/Documents/school/College/Spring2013/ComputerVision/FinalProject/PuzzleSolver/PuzzleSolver/Scans/";
-static const std::string output = "/tmp/final/finaloutput.png";
+static  std::string input = "/Users/jzeimen/Documents/school/College/Spring2013/ComputerVision/FinalProject/PuzzleSolver/PuzzleSolver/Scans/";
+static  std::string output = "/tmp/final/finaloutput.png";
 
 
 int main(int argc, const char * argv[])
 {
-    
-    
+    int number_of_pieces = 100;
+    int threshold = 50;
+
+    if( argc > 2 )
+    {
+        input = argv[1];
+        output = argv[2];
+        number_of_pieces = atoi(argv[3]);
+        threshold = atoi(argv[4]);
+    }
+
     std::cout << "Starting..." << std::endl;
     timeval time;
     gettimeofday(&time, NULL);
@@ -45,7 +54,7 @@ int main(int argc, const char * argv[])
 //    puzzle puzzle(input+"horses/", 380, 50);
 
     //Horses back numbered 104 pc
-    puzzle puzzle(input+"horses numbered/", 380, 50);
+    puzzle puzzle(input+"/", number_of_pieces, threshold );
 
     gettimeofday(&time, NULL);
     std::cout << std::endl << "time to initialize:"  << (((time.tv_sec * 1000) + (time.tv_usec / 1000))-inbetween_millis)/1000.0 << std::endl;
@@ -63,7 +72,7 @@ int main(int argc, const char * argv[])
     gettimeofday(&time, NULL);
     std::cout << std::endl << "total time:"  << (((time.tv_sec * 1000) + (time.tv_usec / 1000))-millis)/1000.0 << std::endl;
 
-    system("/usr/bin/open /tmp/final/finaloutput.png");
+    system( (("/usr/bin/open ")+output).c_str() );
     
     return 0;
 }

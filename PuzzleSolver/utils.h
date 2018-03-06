@@ -18,7 +18,8 @@
 #include <sstream>
 #include <dirent.h>
 #include <vector>
-#include "opencv/cv.h"
+#include <opencv/cv.h>
+#include <opencv2/opencv.hpp>
 #include "opencv/highgui.h"
 #include "piece.h"
 typedef std::vector<cv::Mat> imlist;

@@ -54,7 +54,7 @@ piece::piece(cv::Mat color, cv::Mat black_and_white, int estimated_piece_size){
 
 
 void piece::process(){
-    find_corners();
+    //find_corners();
     extract_edges();
     classify();
 }
