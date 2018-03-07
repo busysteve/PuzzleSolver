@@ -72,7 +72,7 @@ int main(int argc, const char * argv[])
     gettimeofday(&time, NULL);
     std::cout << std::endl << "total time:"  << (((time.tv_sec * 1000) + (time.tv_usec / 1000))-millis)/1000.0 << std::endl;
 
-    system( (("/usr/bin/open ")+output).c_str() );
+    system( (("/usr/bin/xviewer ")+output).c_str() );
     
     return 0;
 }

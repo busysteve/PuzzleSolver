@@ -32,6 +32,9 @@ puzzle::puzzle(std::string folderpath, int estimated_piece_size, int thresh, boo
     piece_size = estimated_piece_size;
     std::cout << "extracting pieces" << std::endl;
     pieces = extract_pieces(folderpath, filter);
+    
+    std::cout << "extracted [" << pieces.size() << "] pieces" << std::endl;
+
     solved = false;
 //    print_edges();
 }
@@ -77,9 +80,10 @@ std::vector<piece> puzzle::extract_pieces(std::string path, bool needs_filter){
         filter(bw,2);
     }
 
-//    cv::imwrite("/tmp/final/thresh.png", bw[0]);
+    cv::imwrite("/tmp/final/thresh.png", bw[0]);
 
-    
+    std::cout << "Color Images: " << color_images.size() << std::endl;
+
     //For each input image
     for(int i = 0; i<color_images.size(); i++){
         std::vector<std::vector<cv::Point> > contours;
@@ -94,6 +98,9 @@ std::vector<piece> puzzle::extract_pieces(std::string path, bool needs_filter){
         //For each contour in that image
         //TODO: (In anticipation of the other TODO's Re-create the b/w image
         //    based off of the contour to eliminate noise in the layer mask
+
+        std::cout << "Contour size: " << contours.size() << std::endl;
+
         for(int j = 0; j<contours.size(); j++){
             int bordersize = 15;
             cv::Rect r =  cv::boundingRect(contours[j]);
@@ -107,13 +114,13 @@ std::vector<piece> puzzle::extract_pieces(std::string path, bool needs_filter){
             cv::drawContours(new_bw, contours_to_draw, -1, cv::Scalar(255), CV_FILLED);
             //        std::cout << out_file_name.str() << std::endl;
             //        cv::imwrite(out_file_name.str(), m);
-//            cv::imwrite("/tmp/final/new_bw.png", new_bw);
+            cv::imwrite("/tmp/final/new_bw.png", new_bw);
 
             r.width += bordersize*2;
             r.height += bordersize*2;
             r.x -= bordersize;
             r.y -= bordersize;
-//            cv::imwrite("/tmp/final/bw.png", bw[i](r));            
+            cv::imwrite("/tmp/final/bw.png", bw[i](r));            
             cv::Mat mini_color = color_images[i](r);
             cv::Mat mini_bw = new_bw;//bw[i](r);
             //Create a copy so it can't conflict.
@@ -158,7 +165,8 @@ void puzzle::fill_costs(){
 //Solves the puzzle
 void puzzle::solve(){
     
-    std::cout << "Finding edge costs..." << std::endl;
+    std::cout << "Finding edge costs for [" << pieces.size() << "] pieces" << std::endl;
+
     fill_costs();
     std::vector<match_score>::iterator i= matches.begin();
     PuzzleDisjointSet p((int)pieces.size());

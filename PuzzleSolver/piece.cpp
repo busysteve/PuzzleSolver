@@ -145,9 +145,16 @@ void piece::extract_edges(){
     std::vector<std::vector<cv::Point> > contours;
     std::vector<cv::Vec4i> hierarchy;
     cv::findContours(bw.clone(), contours, hierarchy, cv::RETR_LIST, cv::CHAIN_APPROX_NONE);
-    assert(corners.size() == 4);
+    //assert(corners.size() == 4);
+
+    if( 4 != corners.size() )
+    {
+        std::cerr << "Found incorrect number of corners: " << corners.size() << std::endl;
+        exit(3);
+    }
+
     if( 1 != contours.size() ){
-        std::cerr << "Found incorrect number of contours." << std::endl;
+        std::cerr << "Found incorrect number of contours: " << contours.size() << std::endl;
         exit(3);
     }
     std::vector<cv::Point> contour = contours[0];
